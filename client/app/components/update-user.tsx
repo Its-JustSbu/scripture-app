@@ -137,7 +137,7 @@ export default function Updateuser(user: user) {
     <>
       <button
         onClick={() => openModal()}
-        className="p-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm rounded-full transition-colors duration-200"
+        className="p-2 bg-yellow-500 hover:bg-yellow-600 text-white text-sm rounded-full transition-colors duration-200 max-sm:w-full max-sm:rounded"
       >
         Update Access
       </button>

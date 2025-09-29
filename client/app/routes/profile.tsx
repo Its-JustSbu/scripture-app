@@ -545,14 +545,14 @@ function profile() {
                   {/* Search Bar */}
                   <form
                     onSubmit={handleSearch}
-                    className="space-x-2 w-full mt-4 mb-2"
+                    className="space-x-2 w-full mt-4 mb-2 flex flex-row"
                   >
                     <input
                       type="text"
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       placeholder="Search Email..."
-                      className="flex-1 px-3 py-2 border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
+                      className="px-3 py-2 border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
                     />
                     <button
                       type="submit"

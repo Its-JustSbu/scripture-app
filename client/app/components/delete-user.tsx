@@ -46,7 +46,7 @@ export default function Deleteuser({ id }: any) {
     <>
       <button
         onClick={handleDeleteClick}
-        className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition"
+        className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition max-sm:w-full max-sm:rounded"
       >
         <Trash className="inline-block" />
       </button>
