@@ -106,7 +106,7 @@ export default function Auth() {
         window.location.reload();
       }
 
-      toast.success(result.message, {
+      toast.error(result.message, {
         duration: 4000,
         position: "top-right",
       });
