@@ -1,0 +1,158 @@
+{
+  "buildManifest": {
+    "serverBundles": {
+      "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0": {
+        "id": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+        "file": "build/server/nodejs_eyJydW50aW1lIjoibm9kZWpzIn0/index.js",
+        "config": {
+          "runtime": "nodejs"
+        }
+      }
+    },
+    "routeIdToServerBundleId": {
+      "root": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/layout": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/profile": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/scripture-chat": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/scriptures": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0",
+      "routes/notFound": "nodejs_eyJydW50aW1lIjoibm9kZWpzIn0"
+    },
+    "routes": {
+      "root": {
+        "id": "root",
+        "file": "app/root.tsx",
+        "path": "",
+        "config": {
+          "runtime": "nodejs"
+        }
+      },
+      "routes/layout": {
+        "id": "routes/layout",
+        "parentId": "root",
+        "file": "app/routes/layout.tsx",
+        "path": "",
+        "config": {}
+      },
+      "routes/profile": {
+        "id": "routes/profile",
+        "parentId": "routes/layout",
+        "file": "app/routes/profile.tsx",
+        "path": "profile",
+        "config": {}
+      },
+      "routes/scripture-chat": {
+        "id": "routes/scripture-chat",
+        "parentId": "routes/layout",
+        "file": "app/routes/scripture-chat.tsx",
+        "path": "scriptures/:id",
+        "config": {}
+      },
+      "routes/scriptures": {
+        "id": "routes/scriptures",
+        "parentId": "routes/layout",
+        "file": "app/routes/scriptures.tsx",
+        "path": "",
+        "config": {}
+      },
+      "routes/notFound": {
+        "id": "routes/notFound",
+        "parentId": "routes/layout",
+        "file": "app/routes/notFound.tsx",
+        "path": "*",
+        "config": {}
+      }
+    }
+  },
+  "reactRouterConfig": {
+    "appDirectory": "C:/Users/116su/source/repos/scripture-collaborate-app/client/app",
+    "basename": "/",
+    "buildDirectory": "C:/Users/116su/source/repos/scripture-collaborate-app/client/build",
+    "future": {
+      "unstable_middleware": false,
+      "unstable_optimizeDeps": false,
+      "unstable_splitRouteModules": false,
+      "unstable_subResourceIntegrity": false,
+      "unstable_viteEnvironmentApi": false
+    },
+    "routes": {
+      "root": {
+        "id": "root",
+        "file": "root.tsx",
+        "path": ""
+      },
+      "routes/layout": {
+        "id": "routes/layout",
+        "parentId": "root",
+        "file": "routes/layout.tsx",
+        "path": ""
+      },
+      "routes/profile": {
+        "id": "routes/profile",
+        "parentId": "routes/layout",
+        "file": "./routes/profile.tsx",
+        "path": "profile"
+      },
+      "routes/scripture-chat": {
+        "id": "routes/scripture-chat",
+        "parentId": "routes/layout",
+        "file": "./routes/scripture-chat.tsx",
+        "path": "scriptures/:id"
+      },
+      "routes/scriptures": {
+        "id": "routes/scriptures",
+        "parentId": "routes/layout",
+        "file": "./routes/scriptures.tsx",
+        "path": ""
+      },
+      "routes/notFound": {
+        "id": "routes/notFound",
+        "parentId": "routes/layout",
+        "file": "./routes/notFound.tsx",
+        "path": "*"
+      }
+    },
+    "routeDiscovery": {
+      "mode": "lazy",
+      "manifestPath": "/__manifest"
+    },
+    "serverBuildFile": "index.js",
+    "serverModuleFormat": "esm",
+    "ssr": true,
+    "unstable_routeConfig": [
+      {
+        "id": "root",
+        "path": "",
+        "file": "root.tsx",
+        "children": [
+          {
+            "file": "routes/layout.tsx",
+            "children": [
+              {
+                "file": "./routes/profile.tsx",
+                "path": "profile"
+              },
+              {
+                "file": "./routes/scripture-chat.tsx",
+                "path": "scriptures/:id"
+              },
+              {
+                "file": "./routes/scriptures.tsx",
+                "path": ""
+              },
+              {
+                "file": "./routes/notFound.tsx",
+                "path": "*"
+              }
+            ],
+            "path": ""
+          }
+        ]
+      }
+    ]
+  },
+  "viteConfig": {
+    "build": {
+      "assetsDir": "assets"
+    }
+  }
+}
