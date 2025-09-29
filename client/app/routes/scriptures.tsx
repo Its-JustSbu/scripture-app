@@ -51,20 +51,20 @@ function scriptures() {
   return (
     <>
       <div className="p-8 max-md:pt-12">
-        <h2 className="font-bold text-4xl">
+        <h2 className="font-bold text-4xl max-sm:text-center max-sm:w-full">
           Welcome to the{" "}
           <span className="bg-gradient-to-tr from-black to-blue-700 bg-clip-text text-transparent">
             ScriptureApp
           </span>
         </h2>
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="space-x-2 m-4 ml-0">
+        <form onSubmit={handleSearch} className="space-x-2 m-4 ml-0 flex flex-row">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search Scripture..."
-            className="flex-1 px-3 py-2 border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
+            className="px-3 py-2 border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
           />
           <button
             type="submit"

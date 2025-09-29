@@ -3,6 +3,8 @@ import "./add-scripture.css";
 import { X, Save, PlusCircle, Book } from "lucide-react";
 import { getUserID, getUserRole, isAdmin } from "~/utils/auth";
 import toast from "react-hot-toast";
+import type { notifications } from "~/routes/profile";
+import coustomFetch from "~/utils/api";
 
 export interface prayerpoint {
   id?: any;
@@ -162,6 +164,19 @@ export default function AddScripture() {
           duration: 4000,
           position: "top-right",
         });
+
+        const notification: notifications = {
+          id: 0,
+          message: `New scripture ${formData?.book} ${formData?.chapter}:${formData?.verse} posted by admin`,
+        };
+
+        await coustomFetch(
+          `${process.env.VITE_API_URL}users/notify/${getUserID()}`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({message: notification.message}),
+          }
+        );
         closeModal();
       }
     } catch (error) {

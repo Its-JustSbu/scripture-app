@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import type { Scripture } from "./add-scripture";
 import coustomFetch from "~/utils/api";
 import toast from "react-hot-toast";
+import type { notifications } from "~/routes/profile";
+import { getUserID } from "~/utils/auth";
 
 export default function DeleteScripture(props: Scripture) {
   const [showConfirm, setShowConfirm] = useState(false);
@@ -22,6 +24,18 @@ export default function DeleteScripture(props: Scripture) {
         duration: 4000,
         position: "top-right",
       });
+      const notification: notifications = {
+        id: 0,
+        message: `${props?.book} ${props?.chapter}:${props?.verse} scripture deleted by admin`,
+      };
+
+      await coustomFetch(
+        `${process.env.VITE_API_URL}users/notify/${getUserID()}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({message: notification.message}),
+        }
+      );
       return;
     }
 

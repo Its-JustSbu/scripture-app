@@ -103,19 +103,19 @@ users.patch("/changepassword", async (req, res) => {
     const { email, password, newpassword } = req.body;
 
     if (!password || !newpassword) {
-      return res.json({ message: "All fields are required" });
+      return res.status(400).json({ message: "All fields are required" });
     }
 
     let collections = await db.collection("Users");
     let user = await collections.findOne({ email });
 
     if (!user) {
-      return res.json({ message: "User not found" });
+      return res.status(404).json({ message: "User not found" });
     }
 
     const auth = await bcrypt.compare(password, user.password);
     if (!auth) {
-      return res.json({ message: "Incorrect password" });
+      return res.status(400).json({ message: "Incorrect password" });
     }
 
     const newHashedPassword = await bcrypt.hash(newpassword, 12);
@@ -126,7 +126,7 @@ users.patch("/changepassword", async (req, res) => {
       },
     };
 
-    const result = await collections.updateOne(query, updateDocument);
+    await collections.updateOne(query, updateDocument);
     res
       .status(200)
       .json({ message: "Password updated successfully", success: true });
@@ -177,7 +177,7 @@ users.patch("/updatepermissions/:id", async (req, res) => {
       },
     };
 
-    const result = await collections.updateOne(query, updateDocument);
+    await collections.updateOne(query, updateDocument);
     res
       .status(200)
       .json({ message: "User role updated successfully", success: true });
@@ -189,15 +189,15 @@ users.patch("/updatepermissions/:id", async (req, res) => {
 users.patch("/batch", async (req, res) => {
   try {
     const query = { role: "admin" };
-    const { notification } = req.body;
+    const { message } = req.body;
 
     let collections = await db.collection("Users");
     let users = await collections.find(query).toArray();
 
     users.forEach(async (user) => {
       user.notification.push({
-        id: user.notification.length + 1,
-        message: notification,
+        id: user.notification[user.notification.length - 1].id + 1,
+        message: message,
       });
 
       const updateDocument = {
@@ -206,7 +206,7 @@ users.patch("/batch", async (req, res) => {
         },
       };
 
-      await collections.updateMany(query, updateDocument);
+      await collections.updateOne(query, updateDocument);
     });
     
     res
@@ -220,12 +220,15 @@ users.patch("/batch", async (req, res) => {
 users.patch("/notify/:id", async (req, res) => {
   try {
     const query = { _id: new ObjectId(req.params.id) };
-    const { notification } = req.body;
+    const { message } = req.body;
 
     let collections = await db.collection("Users");
     let user = await collections.findOne(query);
 
-    user.notification.push(notification);
+    user.notification.push({
+        id: user.notification[user.notification.length - 1].id + 1,
+        message: message,
+    });
 
     const updateDocument = {
       $set: {
@@ -237,6 +240,26 @@ users.patch("/notify/:id", async (req, res) => {
     res.status(200).json({ message: "User notified", success: true });
   } catch (error) {
     res.status(500).json({ message: "Error notifying user", error });
+  }
+});
+
+users.delete("/notify/:id", async (req, res) => {
+  try {
+    const query = { _id: new ObjectId(req.params.id) };
+    const { notification } = req.body;
+
+    let collections = await db.collection("Users");
+
+    const updateDocument = {
+      $set: {
+        notification: notification,
+      },
+    };
+
+    await collections.updateOne(query, updateDocument);
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ message: "Error reading notification", error });
   }
 });
 

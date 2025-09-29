@@ -140,6 +140,17 @@ function profile() {
     return newErrors;
   };
 
+  const handleRead = async (id: number) => {
+    await coustomFetch(`${process.env.VITE_API_URL}users/notify/${profileData._id}`, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        notification: profileData.notification?.filter(x => x.id != id),
+      })
+    })
+
+    setNotifications(profileData.notification?.filter(x => x.id != id) ?? [])
+  }
+
   const handleSave = async () => {
     setIsSaving(true);
 
@@ -151,45 +162,53 @@ function profile() {
         return;
       }
 
-      const passwordErrors = validatePasswordForm();
-      if (Object.keys(passwordErrors).length === 0) {
+      if (Object.keys(passwordData).length === 3) {
+        console.log(passwordData);
         const passwordResponse = await coustomFetch(
           `${process.env.VITE_API_URL}users/changepassword/`,
           {
             method: "PATCH",
             body: JSON.stringify({
-              ...profileData,
+              email: profileData.email,
               password: passwordData.currentPassword,
-              newPassword: passwordData.newPassword,
+              newpassword: passwordData.confirmPassword,
             }),
           }
         );
 
         const result = await passwordResponse.json();
 
-        if (!result.success) {
-          toast.error(`Error changing password`, {
+        if (passwordResponse.status >= 400) {
+          toast.error(result.message, {
             duration: 4000,
             position: "top-right",
           });
-          setIsSaving(false);
-          return;
-        }
+          return
+        } 
 
-        toast.success("Password changed successfully!", {
+        toast.success(result.message, {
           duration: 4000,
           position: "top-right",
         });
       }
 
-      const response = await coustomFetch(`${process.env.VITE_API_URL}users/`, {
-        method: "PATCH",
-        body: JSON.stringify(profileData),
-      });
+      try {
+        const response = await coustomFetch(
+          `${process.env.VITE_API_URL}users/`,
+          {
+            method: "PATCH",
+            body: JSON.stringify(profileData),
+          }
+        );
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (!result.sucess) {
+        toast.success(result.message, {
+          duration: 4000,
+          position: "top-right",
+        });
+        setIsEditing(false);
+      } catch (error) {
         toast.error(`Error updating profile!`, {
           duration: 4000,
           position: "top-right",
@@ -197,17 +216,13 @@ function profile() {
         setIsSaving(false);
         return;
       }
-
-      toast.success("Profile updated!", {
-        duration: 4000,
-        position: "top-right",
-      });
-      setIsEditing(false);
     } catch (error) {
-      toast.error("Save error!", {
+      toast.error(`Error changing password`, {
         duration: 4000,
         position: "top-right",
       });
+      setIsSaving(false);
+      return;
     } finally {
       setIsSaving(false);
     }
@@ -243,7 +258,7 @@ function profile() {
     <div className="min-h-screen w-full">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Notifications Button and Popover */}
-        <div className="fixed right-4 top-2">
+        <div className="fixed right-4 top-5">
           <div className="relative">
             <button
               onClick={() => setShowNotifications((prev) => !prev)}
@@ -282,11 +297,7 @@ function profile() {
                       >
                         {n.message}
                         <button
-                          onClick={() =>
-                            setNotifications(
-                              notifications?.filter((x) => x.id != n.id)
-                            )
-                          }
+                          onClick={() => handleRead(n.id as number)}
                         >
                           <X className="inline-block w-5 h-5 text-red-500" />
                         </button>
@@ -374,15 +385,15 @@ function profile() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     First Name
                   </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <div className="sm:relative max-sm:flex max-sm:flex-row max-sm:items-center max-sm:space-x-2">
+                    <User className="sm:absolute sm:left-3 sm:top-1/2 sm:transform sm:-translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="text"
                       name="firstName"
                       value={profileData.firstname}
                       onChange={handleInputChange}
                       disabled={!isEditing}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                      className={`w-full sm:pl-10 pl-5 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
                         !isEditing
                           ? "bg-gray-50 text-gray-600"
                           : "bg-white text-gray-900 border-gray-300"
@@ -395,15 +406,15 @@ function profile() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Last Name
                   </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <div className="sm:relative max-sm:flex max-sm:flex-row max-sm:items-center max-sm:space-x-2">
+                    <User className="sm:absolute sm:left-3 sm:top-1/2 sm:transform sm:-translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="text"
                       name="lastName"
                       value={profileData.lastname}
                       onChange={handleInputChange}
                       disabled={!isEditing}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                      className={`w-full sm:pl-10 pl-5 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
                         !isEditing
                           ? "bg-gray-50 text-gray-600"
                           : "bg-white text-gray-900 border-gray-300"
@@ -416,15 +427,15 @@ function profile() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Email
                   </label>
-                  <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <div className="sm:relative max-sm:flex max-sm:flex-row max-sm:items-center max-sm:space-x-2">
+                    <Mail className="sm:absolute sm:left-3 sm:top-1/2 sm:transform sm:-translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="email"
                       name="email"
                       value={profileData.email}
                       onChange={handleInputChange}
                       disabled={!isEditing}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                      className={`w-full sm:pl-10 pl-5 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
                         !isEditing
                           ? "bg-gray-50 text-gray-600"
                           : "bg-white text-gray-900 border-gray-300"
@@ -437,15 +448,15 @@ function profile() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Phone
                   </label>
-                  <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <div className="sm:relative max-sm:flex max-sm:flex-row max-sm:items-center max-sm:space-x-2">
+                    <Phone className="sm:absolute sm:left-3 sm:top-1/2 sm:transform sm:-translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                       type="tel"
                       name="phone"
                       value={profileData.phone}
                       onChange={handleInputChange}
                       disabled={!isEditing}
-                      className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
+                      className={`w-full sm:pl-10 pl-5 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors duration-200 ${
                         !isEditing
                           ? "bg-gray-50 text-gray-600"
                           : "bg-white text-gray-900 border-gray-300"
@@ -468,7 +479,7 @@ function profile() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Current Password
                     </label>
-                    <div className="relative">
+                    <div className="sm:relative max-sm:flex max-sm:flex-row max-sm:items-center max-sm:space-x-2">
                       <input
                         type={showPassword ? "text" : "password"}
                         name="currentPassword"
@@ -480,7 +491,7 @@ function profile() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        className="sm:absolute sm:right-3 sm:top-1/2 sm:transform sm:-translate-y-1/2 text-gray-400 hover:text-gray-600"
                       >
                         {showPassword ? (
                           <EyeOff className="w-5 h-5" />

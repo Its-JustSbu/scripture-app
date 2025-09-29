@@ -2,15 +2,11 @@ GET https://scripture-app-api.vercel.app/scriptures/
 
 ###
 
-POST http://localhost:3000/users/register
+PATCH http://localhost:3000/users/notify/68d2cb14bca51054c4bd937f
 Content-Type: application/json
 
 {
-    "firstname": "Admin",
-    "lastname": "super",
-    "phone": "0987654321",
-    "email": "116superstm@gmail.com",
-    "password": "Admin123!"
+    "message": "notifications testing"
 }
 
 ###

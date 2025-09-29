@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./update-scripture.css";
 import type { Scripture } from "./add-scripture";
 import { Upload, X, Book, Save, User, Key } from "lucide-react";
-import type { user } from "~/routes/profile";
+import type { notifications, user } from "~/routes/profile";
 import coustomFetch from "~/utils/api";
 import { getUserID } from "~/utils/auth";
 import toast from "react-hot-toast";
@@ -111,6 +111,18 @@ export default function Updateuser(user: user) {
         duration: 4000,
         position: "top-right",
       });
+      const notification: notifications = {
+        id: 0,
+        message: `User with email: ${user.email} was given admin privileges.`,
+      };
+
+      await coustomFetch(
+        `${process.env.VITE_API_URL}users/batch/`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({message: notification.message}),
+        }
+      );
       closeModal();
     } catch (error) {
       toast.error("Submission error!", {

@@ -4,7 +4,6 @@ import {
   UserStar,
   ArrowLeft,
   CheckIcon,
-  X,
   Clock,
 } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -13,6 +12,7 @@ import type { prayerpoint, Scripture } from "~/components/add-scripture";
 import { getUserID, getUserRole, isAdmin, isAuthenticated } from "~/utils/auth";
 import coustomFetch from "~/utils/api";
 import toast from "react-hot-toast";
+import type { notifications } from "./profile";
 
 const category_color = {
   "main prayer point": "bg-blue-500",
@@ -32,14 +32,15 @@ const category_color = {
 
 export async function loader({ params }: Route.LoaderArgs) {
   const scriptureId = params.id;
-  if (!scriptureId) {
+  const apiCall = `${process.env.VITE_API_URL}scriptures/${scriptureId}`;
+
+  if (scriptureId === undefined) {
     throw new Error("Scripture ID is required");
   }
 
   let scripture: Scripture = {};
-  const response = await fetch(
-    `${process.env.VITE_API_URL}${scriptureId}`
-  );
+  const response = await fetch(apiCall);
+
   if (!response.ok) {
     console.error(`Error fetching scriptures: ${response.statusText}`);
     return;
@@ -60,7 +61,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     const fetchPrayerPoints = async () => {
       const response = await coustomFetch(
-        `${process.env.VITE_API_URL}prayerpoints/${loaderData?._id}`,
+        `${process.env.VITE_API_URL}scriptures/prayerpoints/${loaderData?._id}`,
         {
           method: "GET",
         }
@@ -91,23 +92,40 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
     };
     prayers.push(newUserPrayer);
 
+    const notification: notifications = {
+      id: 0,
+      message: `New prayer point posted by user in ${loaderData?.book} ${loaderData?.chapter}:${loaderData?.verse}`,
+    };
+
     try {
       const response = await coustomFetch(
-        `${process.env.VITE_API_URL}post-prayerpoint/${loaderData?._id}`,
+        `${process.env.VITE_API_URL}scriptures/post-prayerpoint/${loaderData?._id}`,
         {
           method: "PATCH",
           body: JSON.stringify({ prayer_point: prayers }),
         }
       );
 
-      if (!response.ok) {
-        console.error(`Error posting prayer: ${response.statusText}`);
+      const notificationResponse = await coustomFetch(
+        `${process.env.VITE_API_URL}users/batch/`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({message: notification.message}),
+        }
+      );
+
+      if (!response.ok || !notificationResponse.ok) {
+        toast.error(`Error posting prayer!`, {
+          duration: 4000,
+          position: "top-right",
+        });
         return;
       }
-
-      console.log("Prayer posted successfully.");
     } catch (error) {
-      console.error("Error posting prayer:", error);
+      toast.error("Error posting prayer!", {
+        duration: 4000,
+        position: "top-right",
+      });
     } finally {
       setInputPrayer("");
       setInputCategory("");
@@ -149,7 +167,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
 
     try {
       const response = await coustomFetch(
-        `${process.env.VITE_API_URL}approve/${loaderData?._id}`,
+        `${process.env.VITE_API_URL}scriptures/approve/${loaderData?._id}`,
         {
           method: "PATCH",
           body: JSON.stringify({
@@ -157,6 +175,11 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
           }),
         }
       );
+
+      const notification: notifications = {
+        id: 0,
+        message: `Prayer point was ${approve ? 'approved' : 'denied'} by admin for `,
+      };
 
       const result = await response.json();
 
@@ -166,6 +189,13 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
           position: "top-right",
         });
         //TODO: Send Notification
+        await coustomFetch(
+        `${process.env.VITE_API_URL}users/notify/${prayers[i].userID}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({message: notification.message}),
+        }
+      );
       }
     } catch (error) {
       toast.error(`Error approving prayer point`, {
@@ -183,7 +213,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
         <div className="border border-gray-200 p-3 flex flex-row items-center space-x-4">
           <button
             onClick={handleGoBack}
-            className={`inline-flex items-center justify-center w-10 h-10 text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md`}
+            className={`max-lg:ml-15 inline-flex items-center justify-center w-10 h-10 text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md`}
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
@@ -195,14 +225,14 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
             </h2>
           </div>
         </div>
-        <div className="flex flex-row h-full w-full">
-          <div className="w-1/4 border border-gray-200 p-3">
+        <div className="flex flex-row max-sm:flex-col h-full w-full">
+          <div className="w-1/4 border border-gray-200 p-3 max-sm:w-full">
             <h4>Scripture: </h4>
             <p className="font-light text-sm">
               {loaderData ? loaderData.scripture : ""}
             </p>
           </div>
-          <div className="flex flex-col justify-between w-full bg-transparent shadow-lg border border-gray-200">
+          <div className="flex flex-col justify-between w-full max-sm:h-full bg-transparent shadow-lg border border-gray-200">
             {/* prayers Area */}
             <div className="flex-1 overflow-auto space-y-4 p-3">
               {prayers?.map((prayer, index) => (
@@ -337,7 +367,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
                   </select>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <div className="flex-1 relative">
+                  <div className="flex-1 sm:relative">
                     <textarea
                       value={inputPrayer}
                       onChange={(e) => setInputPrayer(e.target.value)}

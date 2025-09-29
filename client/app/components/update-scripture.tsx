@@ -4,6 +4,8 @@ import { X, Save, Upload, Book } from "lucide-react";
 import type { Scripture } from "./add-scripture";
 import coustomFetch from "~/utils/api";
 import toast from "react-hot-toast";
+import type { notifications } from "~/routes/profile";
+import { getUserID } from "~/utils/auth";
 
 export default function UpdateScripture(props: Scripture) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -125,6 +127,19 @@ export default function UpdateScripture(props: Scripture) {
           duration: 4000,
           position: "top-right",
         });
+
+        const notification: notifications = {
+          id: 0,
+          message: `${formData?.book} ${formData?.chapter}:${formData?.verse} updated by admin`,
+        };
+
+        await coustomFetch(
+          `${process.env.VITE_API_URL}users/batch/`,
+          {
+            method: "PATCH",
+            body: JSON.stringify({ message: notification.message }),
+          }
+        );
         closeModal();
       }
     } catch (error) {

@@ -1,6 +1,9 @@
 import { Trash } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
+import type { notifications } from "~/routes/profile";
+import coustomFetch from "~/utils/api";
+import { getUserID } from "~/utils/auth";
 
 export default function Deleteuser({ id }: any) {
   const [showConfirm, setShowConfirm] = useState(false);
@@ -19,6 +22,19 @@ export default function Deleteuser({ id }: any) {
       });
       return;
     }
+
+    const notification: notifications = {
+      id: 0,
+      message: `A user removed by admin`,
+    };
+
+    await coustomFetch(
+      `${process.env.VITE_API_URL}users/batch/}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ message: notification.message }),
+      }
+    );
 
     toast.success(`User deleted successfully.`, {
       duration: 4000,
