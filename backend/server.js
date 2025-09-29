@@ -17,7 +17,8 @@ app.use(cookieParser());
 
 app.use('/scriptures', scriptures);
 app.use('/users', users)
+app.get('/', (req, res) => {
+    res.send('Scripture App API');
+})
 
-app.listen(PORT, () => {
-    console.log(`Server is running on  http://localhost:${PORT}`);
-});
+export default app;
