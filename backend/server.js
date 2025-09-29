@@ -15,8 +15,6 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-app.use('/scriptures', scriptures);
-app.use('/users', users)
 app.get('/', (req, res) => {
     res.send('Scripture App API');
 })
