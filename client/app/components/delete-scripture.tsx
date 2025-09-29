@@ -11,7 +11,7 @@ export default function DeleteScripture(props: Scripture) {
   const handleConfirm = async () => {
     setShowConfirm(false);
     const response = await coustomFetch(
-      `http://localhost:3000/scriptures/${props._id}`,
+      `${process.env.VITE_API_URL}scriptures/${props._id}`,
       {
         method: "DELETE",
       }

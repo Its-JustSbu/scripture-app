@@ -8,7 +8,7 @@ function scriptures() {
   let [reset, setReset] = useState(false);
 
   const fetchScriptures = async () => {
-    const response = await fetch("http://localhost:3000/scriptures/");
+    const response = await fetch(`${process.env.VITE_API_URL}scriptures/`);
       if (!response.ok) {
         toast.error(`Error fetching scriptures!`, {
           duration: 4000,

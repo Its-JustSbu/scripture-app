@@ -13,7 +13,7 @@ export default function UpdateScripture(props: Scripture) {
 
   const fetchData = async () => {
     const response = await fetch(
-      `http://localhost:3000/scriptures/${props._id}`
+      `${process.env.VITE_API_URL}scriptures/${props._id}`
     );
     if (!response.ok) {
       console.log(`An error has occured: ${response.statusText}`);
@@ -114,7 +114,7 @@ export default function UpdateScripture(props: Scripture) {
 
     try {
       const response = await coustomFetch(
-        `http://localhost:3000/scriptures/${props._id}`,
+        `${process.env.VITE_API_URL}scriptures/${props._id}`,
         {
           method: "PATCH",
           body: JSON.stringify(formData),

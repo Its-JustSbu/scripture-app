@@ -8,7 +8,7 @@ export default function Deleteuser({ id }: any) {
   const handleDeleteClick = () => setShowConfirm(true);
   const handleConfirm = async () => {
     setShowConfirm(false);
-    const response = await fetch(`http://localhost:3000/users/${id}`, {
+    const response = await fetch(`${process.env.VITE_API_URL}users/${id}`, {
       method: "DELETE",
     });
     const result = await response.json();

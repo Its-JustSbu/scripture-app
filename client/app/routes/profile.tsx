@@ -51,7 +51,7 @@ function profile() {
   const fetchProfiles = async () => {
     try {
       const response = await coustomFetch(
-        `http://localhost:3000/users/getall/${userID}`,
+        `${process.env.VITE_API_URL}users/getall/${userID}`,
         {
           method: "GET",
         }
@@ -70,7 +70,7 @@ function profile() {
     const fetchProfile = async () => {
       try {
         const response = await coustomFetch(
-          `http://localhost:3000/users/${userID}`,
+          `${process.env.VITE_API_URL}users/${userID}`,
           {
             method: "GET",
           }
@@ -154,7 +154,7 @@ function profile() {
       const passwordErrors = validatePasswordForm();
       if (Object.keys(passwordErrors).length === 0) {
         const passwordResponse = await coustomFetch(
-          `http://localhost:3000/users/changepassword/`,
+          `${process.env.VITE_API_URL}users/changepassword/`,
           {
             method: "PATCH",
             body: JSON.stringify({
@@ -182,7 +182,7 @@ function profile() {
         });
       }
 
-      const response = await coustomFetch(`http://localhost:3000/users/`, {
+      const response = await coustomFetch(`${process.env.VITE_API_URL}users/`, {
         method: "PATCH",
         body: JSON.stringify(profileData),
       });

@@ -15,7 +15,7 @@ export default function Updateuser(user: user) {
 
   const updatepermission = async () => {
     const response = await coustomFetch(
-      `http://localhost:3000/users/updatepermissions/${user._id}`,
+      `${process.env.VITE_API_URL}users/updatepermissions/${user._id}`,
       {
         method: "PATCH",
         body: JSON.stringify(profileData),

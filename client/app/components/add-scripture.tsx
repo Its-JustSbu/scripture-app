@@ -149,7 +149,7 @@ export default function AddScripture() {
     ];
 
     try {
-      const response = await fetch(`http://localhost:3000/scriptures/`, {
+      const response = await fetch(`${process.env.VITE_API_URL}scriptures/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

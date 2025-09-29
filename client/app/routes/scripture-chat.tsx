@@ -38,7 +38,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
   let scripture: Scripture = {};
   const response = await fetch(
-    `http://localhost:3000/scriptures/${scriptureId}`
+    `${process.env.VITE_API_URL}${scriptureId}`
   );
   if (!response.ok) {
     console.error(`Error fetching scriptures: ${response.statusText}`);
@@ -60,7 +60,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
   useEffect(() => {
     const fetchPrayerPoints = async () => {
       const response = await coustomFetch(
-        `http://localhost:3000/scriptures/prayerpoints/${loaderData?._id}`,
+        `${process.env.VITE_API_URL}prayerpoints/${loaderData?._id}`,
         {
           method: "GET",
         }
@@ -93,7 +93,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
 
     try {
       const response = await coustomFetch(
-        `http://localhost:3000/scriptures/post-prayerpoint/${loaderData?._id}`,
+        `${process.env.VITE_API_URL}post-prayerpoint/${loaderData?._id}`,
         {
           method: "PATCH",
           body: JSON.stringify({ prayer_point: prayers }),
@@ -149,7 +149,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
 
     try {
       const response = await coustomFetch(
-        `http://localhost:3000/scriptures/approve/${loaderData?._id}`,
+        `${process.env.VITE_API_URL}approve/${loaderData?._id}`,
         {
           method: "PATCH",
           body: JSON.stringify({
