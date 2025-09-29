@@ -253,7 +253,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
                         }`}
                       >
                         <>
-                          <div className="flex flex-row items-center text-white">
+                          <div className="flex flex-row items-center text-white max-sm:text-xs">
                             {prayer.user_role == "admin" ? (
                               <UserStar className="w-5 h-5 mx-2 text-white" />
                             ) : (
