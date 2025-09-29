@@ -141,15 +141,18 @@ function profile() {
   };
 
   const handleRead = async (id: number) => {
-    await coustomFetch(`${process.env.VITE_API_URL}users/notify/${profileData._id}`, {
-      method: 'DELETE',
-      body: JSON.stringify({
-        notification: profileData.notification?.filter(x => x.id != id),
-      })
-    })
+    await coustomFetch(
+      `${process.env.VITE_API_URL}users/notify/${profileData._id}`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({
+          notification: profileData.notification?.filter((x) => x.id != id),
+        }),
+      }
+    );
 
-    setNotifications(profileData.notification?.filter(x => x.id != id) ?? [])
-  }
+    setNotifications(profileData.notification?.filter((x) => x.id != id) ?? []);
+  };
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -183,8 +186,8 @@ function profile() {
             duration: 4000,
             position: "top-right",
           });
-          return
-        } 
+          return;
+        }
 
         toast.success(result.message, {
           duration: 4000,
@@ -296,9 +299,7 @@ function profile() {
                         className="p-4 border-b last:border-b-0 text-gray-800 text-sm flex flex-row justify-between"
                       >
                         {n.message}
-                        <button
-                          onClick={() => handleRead(n.id as number)}
-                        >
+                        <button onClick={() => handleRead(n.id as number)}>
                           <X className="inline-block w-5 h-5 text-red-500" />
                         </button>
                       </li>
@@ -545,7 +546,7 @@ function profile() {
                   {/* Search Bar */}
                   <form
                     onSubmit={handleSearch}
-                    className="space-x-2 w-full mt-4 mb-2 flex flex-row"
+                    className="space-x-2 mt-4 mb-2 max-sm:flex max-sm:flex-col"
                   >
                     <input
                       type="text"
@@ -554,19 +555,22 @@ function profile() {
                       placeholder="Search Email..."
                       className="px-3 py-2 border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
                     />
-                    <button
-                      type="submit"
-                      className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                    >
-                      Search
-                    </button>
-                    <button
-                      type="button"
-                      className={`px-3 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition ${!reset && "hidden"}`}
-                      onClick={handleReset}
-                    >
-                      reset
-                    </button>
+                    {!reset ? (
+                      <button
+                        type="submit"
+                        className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                      >
+                        Search
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className={`px-3 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition `}
+                        onClick={handleReset}
+                      >
+                        reset
+                      </button>
+                    )}
                   </form>
 
                   {/*Users table filtered*/}

@@ -9,16 +9,16 @@ function scriptures() {
 
   const fetchScriptures = async () => {
     const response = await fetch(`${process.env.VITE_API_URL}scriptures/`);
-      if (!response.ok) {
-        toast.error(`Error fetching scriptures!`, {
-          duration: 4000,
-          position: "top-right",
-        });
-        return;
-      }
-      const result = await response.json();
-      setScriptures(result);
-  }
+    if (!response.ok) {
+      toast.error(`Error fetching scriptures!`, {
+        duration: 4000,
+        position: "top-right",
+      });
+      return;
+    }
+    const result = await response.json();
+    setScriptures(result);
+  };
 
   useEffect(() => {
     fetchScriptures();
@@ -38,15 +38,15 @@ function scriptures() {
             item.scripture?.toLowerCase().includes(search.toLowerCase())
         )
       );
-      setReset(true)
+      setReset(true);
     }
   };
 
   const handleReset = () => {
     setReset(false);
     fetchScriptures();
-    setSearch('');
-  }
+    setSearch("");
+  };
 
   return (
     <>
@@ -58,7 +58,10 @@ function scriptures() {
           </span>
         </h2>
         {/* Search Bar */}
-        <form onSubmit={handleSearch} className="space-x-2 m-4 ml-0 flex flex-row">
+        <form
+          onSubmit={handleSearch}
+          className="space-x-2 m-4 ml-0 flex flex-row"
+        >
           <input
             type="text"
             value={search}
@@ -66,19 +69,22 @@ function scriptures() {
             placeholder="Search Scripture..."
             className="px-3 py-2 border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
           />
-          <button
-            type="submit"
-            className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            Search
-          </button>
-          <button
-            type="button"
-            className={`px-3 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition ${!reset && 'hidden'}`}
-            onClick={handleReset}
-          >
-            reset
-          </button>
+          {!reset ? (
+            <button
+              type="submit"
+              className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              Search
+            </button>
+          ) : (
+            <button
+              type="button"
+              className={`px-3 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition`}
+              onClick={handleReset}
+            >
+              reset
+            </button>
+          )}
         </form>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {scriptures.length === 0 && (
