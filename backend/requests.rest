@@ -1,4 +1,4 @@
-GET https://scripture-app-api.vercel.app/scriptures/
+GET https://scripture-app-api.vercel.app/api/app/
 
 ###
 
