@@ -1,4 +1,4 @@
-GET http://localhost:3000/scriptures/
+GET https://scripture-app-api.vercel.app/scriptures/
 
 ###
 
@@ -14,7 +14,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/users/
+POST https://scripture-app-api.vercel.app/users/
 Content-Type: application/json
 
 {
