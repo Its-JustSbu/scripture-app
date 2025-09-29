@@ -98,13 +98,18 @@ export default function Auth() {
 
       if (response.ok) {
         localStorage.setItem("token", result.token);
-        toast.success("Login Successful!", {
+        toast.success(result.message, {
           duration: 4000,
           position: "top-right",
         });
         setIsModalOpen(false);
         window.location.reload();
       }
+
+      toast.success(result.message, {
+        duration: 4000,
+        position: "top-right",
+      });
     } catch (error) {
       toast.error("Login failed!", {
         duration: 4000,
@@ -127,13 +132,16 @@ export default function Auth() {
     setSubmitting(true);
 
     try {
-      const response = await fetch(`${process.env.VITE_API_URL}users/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(signUp),
-      });
+      const response = await fetch(
+        `${process.env.VITE_API_URL}users/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(signUp),
+        }
+      );
 
       const result = await response.json();
 
