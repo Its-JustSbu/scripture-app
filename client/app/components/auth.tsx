@@ -34,7 +34,10 @@ export default function Auth() {
     email: "",
     password: "",
     confirmPassword: "",
-    notification: [],
+    notification: [{
+      id: 1,
+      message: 'Welcome to the scripture app.'
+    }],
   });
   const [signUpErrors, setSignUpErrors] = useState<user>({
     firstname: "",
@@ -43,7 +46,10 @@ export default function Auth() {
     email: "",
     password: "",
     confirmPassword: "",
-    notification: [],
+    notification: [{
+      id: 1,
+      message: 'Welcome to the scripture app.'
+    }],
   });
 
   const handleLoginSignupClick = () => {
