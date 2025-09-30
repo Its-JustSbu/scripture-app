@@ -34,6 +34,7 @@ export default function Auth() {
     email: "",
     password: "",
     confirmPassword: "",
+    notification: [],
   });
   const [signUpErrors, setSignUpErrors] = useState<user>({
     firstname: "",
@@ -42,6 +43,7 @@ export default function Auth() {
     email: "",
     password: "",
     confirmPassword: "",
+    notification: [],
   });
 
   const handleLoginSignupClick = () => {
@@ -146,7 +148,7 @@ export default function Auth() {
       const result = await response.json();
 
       if (response.ok) {
-        toast.success("Sign up Successful: ", {
+        toast.success(result.message, {
           duration: 4000,
           position: "top-right",
         });
@@ -155,7 +157,6 @@ export default function Auth() {
           duration: 4000,
           position: "top-right",
         });
-        return;
       }
     } catch (error) {
       toast.error("Sign up failed!", {
