@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import AddScripture, { type Scripture } from "~/components/add-scripture";
+import Filter from "~/components/filter";
 import ScriptureCard from "~/components/scripture-card";
 
 function scriptures() {
   let [scriptures, setScriptures] = useState<Scripture[]>([]);
   let [reset, setReset] = useState(false);
-
+  const year = new Date().getFullYear()
   const fetchScriptures = async () => {
     const response = await fetch(`${process.env.VITE_API_URL}scriptures/`);
     if (!response.ok) {
@@ -42,6 +43,12 @@ function scriptures() {
     }
   };
 
+  const filterData = (s: Scripture[]) => {
+    setScriptures(s);
+    console.log(s)
+    setReset(true);
+  };
+
   const handleReset = () => {
     setReset(false);
     fetchScriptures();
@@ -60,7 +67,7 @@ function scriptures() {
         {/* Search Bar */}
         <form
           onSubmit={handleSearch}
-          className="space-x-2 m-4 ml-0 flex flex-row"
+          className="space-x-2 m-4 ml-0 flex flex-row max-sm:flex-col max-sm:items-center max-sm:space-y-2 max-sm:space-x-0"
         >
           <input
             type="text"
@@ -70,12 +77,15 @@ function scriptures() {
             className="px-3 py-2 border text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:text-black"
           />
           {!reset ? (
-            <button
-              type="submit"
-              className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-            >
-              Search
-            </button>
+            <>
+              <button
+                type="submit"
+                className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+              >
+                Search
+              </button>
+              <Filter onFilter={filterData} scriptures={scriptures} />
+            </>
           ) : (
             <button
               type="button"
@@ -95,6 +105,9 @@ function scriptures() {
           ))}
         </div>
       </div>
+      <p className="m-5">
+          &copy; Scripture App {year}
+      </p>
       <AddScripture />
     </>
   );

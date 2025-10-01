@@ -232,7 +232,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
               {loaderData ? loaderData.scripture : ""}
             </p>
           </div>
-          <div className="flex flex-col justify-between w-full max-sm:h-full bg-transparent shadow-lg border border-gray-200">
+          <div className="flex flex-col justify-between w-full h-[698px] max-sm:h-[679px] overflow-auto bg-transparent shadow-lg border border-gray-200">
             {/* prayers Area */}
             <div className="flex-1 overflow-auto space-y-4 p-3">
               {prayers?.map((prayer, index) => (
