@@ -10,12 +10,12 @@ function layout() {
     <>
       {/* Hamburger button for mobile */}
       <button
-        className="lg:hidden fixed left-4 top-5 z-50 p-2 rounded-full bg-blue-600 text-white focus:outline-none"
+        className={`lg:hidden fixed left-0 top-0 rounded-br-sm p-2 z-50 bg-blue-600 text-white focus:outline-none ${isOpen && 'bg-transparent'}`}
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Open sidebar"
       >
         {isOpen ? (
-          <X className="inline-block w-6 h-6" />
+          <X className="inline-block w-6 h-6 text-blue-600" />
         ) : (
           <svg
             className="w-6 h-6"

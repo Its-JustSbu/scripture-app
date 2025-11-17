@@ -14,7 +14,7 @@ import coustomFetch from "~/utils/api";
 import toast from "react-hot-toast";
 import type { notifications } from "./profile";
 
-const category_color = {
+export const category_color = {
   "main prayer point": "bg-blue-500",
   warfare: "bg-red-500",
   protection: "bg-green-500",
@@ -23,11 +23,12 @@ const category_color = {
   encouragement: "bg-pink-500",
   others: "bg-gray-500",
   family: "bg-indigo-500",
-  concentration: "bg-teal-500",
+  concentration: "bg-gray-500",
   provision: "bg-orange-500",
   direction: "bg-cyan-500",
   "nation/land": "bg-lime-500",
   worship: "bg-amber-500",
+  health: "bg-rose-500",
 };
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -60,19 +61,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
 
   useEffect(() => {
     const fetchPrayerPoints = async () => {
-      const response = await coustomFetch(
-        `${process.env.VITE_API_URL}scriptures/prayerpoints/${loaderData?._id}`,
-        {
-          method: "GET",
-        }
-      );
-
-      if (!response.ok) {
-        console.error(`Error fetching prayer points: ${response.statusText}`);
-        return;
-      }
-
-      setPrayer(await response.json());
+      setPrayer(loaderData?.prayer_point || []);
     };
     fetchPrayerPoints();
   }, []);
@@ -235,7 +224,7 @@ function scripturechat({ loaderData }: Route.ComponentProps) {
           <div className="flex flex-col justify-between w-full h-[698px] max-sm:h-[679px] overflow-auto bg-transparent shadow-lg border border-gray-200">
             {/* prayers Area */}
             <div className="flex-1 overflow-auto space-y-4 p-3">
-              {prayers?.map((prayer, index) => (
+              {prayers.length > 0 && prayers?.map((prayer, index) => (
                 <>
                   {(prayer.isApporved ||
                     isAuthenticatedAdmin ||

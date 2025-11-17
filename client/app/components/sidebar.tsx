@@ -24,6 +24,27 @@ function Sidebar() {
               Scriptures
             </li>
           </NavLink>
+          <NavLink to="add-prayer-point">
+            <li
+              className={`p-2 text-left hover:bg-gray-300 duration-300 ease-in-out hover:rounded-full w-full`}
+            >
+              Submit Prayer Points
+            </li>
+          </NavLink>
+          <NavLink to="resources">
+            <li
+              className={`p-2 text-left hover:bg-gray-300 duration-300 ease-in-out hover:rounded-full w-full`}
+            >
+              Resources
+            </li>
+          </NavLink>
+          <NavLink to="contact-us">
+            <li
+              className={`p-2 text-left hover:bg-gray-300 duration-300 ease-in-out hover:rounded-full w-full`}
+            >
+              Contact Us
+            </li>
+          </NavLink>
           {isAuthenticated() && (
             <NavLink to="/profile">
               <li

@@ -18,34 +18,13 @@ export interface prayerpoint {
 
 export interface Scripture {
   _id?: string;
-  img?: string;
+  prayer_category?: string[];
   book?: string;
-  chapter?: number;
-  verse?: number;
+  chapter?: string;
+  verse?: string;
   scripture?: string;
   prayer_point?: prayerpoint[];
 }
-
-const randomImage = [
-  "https://images.pexels.com/photos/139975/pexels-photo-139975.jpeg",
-  "https://images.pexels.com/photos/1285625/pexels-photo-1285625.jpeg",
-  "https://images.pexels.com/photos/36478/amazing-beautiful-beauty-blue.jpg",
-  "https://images.pexels.com/photos/772429/pexels-photo-772429.jpeg",
-  "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg",
-  "https://images.pexels.com/photos/268533/pexels-photo-268533.jpeg",
-  "https://images.pexels.com/photos/443446/pexels-photo-443446.jpeg",
-  "https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg",
-  "https://images.pexels.com/photos/33041/antelope-canyon-lower-canyon-arizona.jpg",
-  "https://images.pexels.com/photos/462162/pexels-photo-462162.jpeg",
-  "https://images.pexels.com/photos/206359/pexels-photo-206359.jpeg",
-  "https://images.pexels.com/photos/37728/pexels-photo-37728.jpeg",
-  "https://images.pexels.com/photos/1687575/pexels-photo-1687575.jpeg",
-  "https://images.pexels.com/photos/1631677/pexels-photo-1631677.jpeg",
-  "https://images.pexels.com/photos/2253573/pexels-photo-2253573.jpeg",
-  "https://images.pexels.com/photos/1324803/pexels-photo-1324803.jpeg",
-  "https://images.pexels.com/photos/21323/pexels-photo.jpg,",
-  "https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg",
-];
 
 export default function AddScripture() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,7 +96,7 @@ export default function AddScripture() {
       newErrors.book = "Book is required";
     }
 
-    if (formData.chapter == 0) {
+    if (!formData.chapter) {
       newErrors.scripture = "Chapter is required";
     }
 
@@ -134,9 +113,7 @@ export default function AddScripture() {
     }
 
     setIsSubmitting(true);
-
-    formData.img =
-      randomImage[Math.floor(Math.random() * (randomImage.length - 1))];
+    //TODO: add category selection
 
     formData.prayer_point = [
       {
@@ -252,7 +229,7 @@ export default function AddScripture() {
                   <div className="relative">
                     <Book className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
-                      type="number"
+                      type="text"
                       name="chapter"
                       value={formData.chapter}
                       onChange={handleInputChange}
@@ -274,7 +251,7 @@ export default function AddScripture() {
                 <div className="relative">
                   <Book className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                   <input
-                    type="number"
+                    type="text"
                     name="verse"
                     value={formData.verse}
                     onChange={handleInputChange}

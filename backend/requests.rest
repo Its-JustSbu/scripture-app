@@ -2,12 +2,10 @@ GET https://scripture-app-api.vercel.app/scriptures/
 
 ###
 
-PATCH http://localhost:3000/users/notify/68d2cb14bca51054c4bd937f
+POST  http://localhost:3000/scriptures/filter/1/50
 Content-Type: application/json
 
-{
-    "message": "notifications testing"
-}
+{"scripture": "Genesis", "verse": "", "category": ""}
 
 ###
 POST https://scripture-app-api.vercel.app/users/
