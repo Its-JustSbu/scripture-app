@@ -52,7 +52,7 @@ scriptures.post("/filter/:page/:limit", async (req, res) => {
       document = {
         book: { $regex: req.body.scripture},
         verse: { $regex: req.body.verse },
-        "prayer_point.category": { $regex: req.body.category },
+        "prayer_category": { $in: [req.body.category] },
       };
     }
     
