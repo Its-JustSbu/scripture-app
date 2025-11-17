@@ -197,7 +197,7 @@ function Filter({ onFilter, scriptures, onCancel }: any) {
   const handleCategoryClick = (option: string) => {
     setFormData((prev) => ({
       ...prev,
-      category: option.toLowerCase(),
+      category: option,
     }));
     setIsCategory(false);
   };
