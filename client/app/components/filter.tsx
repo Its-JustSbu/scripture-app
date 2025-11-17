@@ -80,18 +80,18 @@ export const bibleBooks = [
 
 export const categories = [
   "Main Prayer Point",
-  "warfare",
-  "protection",
-  "favour",
-  "wealth",
-  "encouragement",
-  "others",
-  "family",
-  "concentration",
-  "provision",
-  "direction",
-  "nation/land",
-  "worship",
+  "Warfare",
+  "Protection",
+  "Favour",
+  "Wealth",
+  "Encouragement",
+  "Others",
+  "Family",
+  "Concentration",
+  "Provision",
+  "Direction",
+  "Nation/land",
+  "Worship",
 ];
 
 function Filter({ onFilter, scriptures, onCancel }: any) {
